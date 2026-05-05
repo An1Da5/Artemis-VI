@@ -1,2 +1,2 @@
-Code for the Artemis VI team for the VEX V5 2026-2027 Override competition
-Notebook Link: https://docs.google.com/presentation/d/1ajEAfRUH8yQ_XjgcD4ycRm1COaJxFisCgX2nh5MS5ck/edit?usp=sharing
+Code for the Artemis VI team for the VEX V5 2026-2027 Override competition - notebook below ↓
+https://docs.google.com/presentation/d/1ajEAfRUH8yQ_XjgcD4ycRm1COaJxFisCgX2nh5MS5ck/edit?usp=sharing
