@@ -85,11 +85,6 @@ void playVexcodeSound(const char *soundName) {
 // Allows for easier use of the VEX Library
 using namespace vex;
 
-void auton() {
-  Brain.Screen.clearScreen();
-  Drivetrain.setDriveVelocity(100, percent);
-}
-
 void user_control() {
   Brain.Screen.clearScreen();
   Drivetrain.setDriveVelocity(100, percent);
@@ -124,6 +119,5 @@ int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
   // Begin project code
-  // auton()
   user_control()
 }
