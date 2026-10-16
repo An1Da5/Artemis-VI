@@ -35,7 +35,11 @@ motor rightMotorB = motor(PORT4, ratio6_1, true);
 motor_group RightDriveSmart = motor_group(rightMotorA, rightMotorB);
 drivetrain Drivetrain = drivetrain(LeftDriveSmart, RightDriveSmart, 319.19, 295, 40, mm, 1);
 
-motor Claw = motor(PORT9, ratio18_1, false);
+motor Lift = motor(PORT5, ratio18_1, false);
+
+motor Claw = motor(PORT6, ratio18_1, false);
+
+motor Claw_Rotate = motor(PORT7, ratio18_1, false);
 
 
 
@@ -87,7 +91,6 @@ using namespace vex;
 controller Controller = controller(primary);
 competition Competition;
 
-
 void auton() {
   Drivetrain.setDriveVelocity(100, percent);
 }
@@ -95,28 +98,52 @@ void auton() {
 void user_control() {
   Drivetrain.setDriveVelocity(100, percent);
   while (true) {
-      // Tank drive - Axis3 = left stick vertical, Axis2 = right stick vertical
-      int leftSpeed  = Controller.Axis3.position();
-      int rightSpeed = Controller.Axis2.position();
+    // Arcade Drive Setup
+    int forwardMotion = Controller.Axis3.position();
+    int turnMotion = Controller.Axis1.position();
+    int leftSpeed = forwardMotion + turnMotion;
+    int rightSpeed = forwardMotion - turnMotion;
 
-      leftMotorA.setVelocity(leftSpeed, percent);
-      leftMotorA.spin(reverse);
-      leftMotorB.setVelocity(leftSpeed, percent);
-      leftMotorB.spin(reverse);
+    leftMotorA.setVelocity(leftSpeed, percent);
+    leftMotorA.spin(reverse);
+    leftMotorB.setVelocity(leftSpeed, percent);
+    leftMotorB.spin(reverse);
 
-      rightMotorA.setVelocity(rightSpeed, percent);
-      rightMotorA.spin(reverse);
-      rightMotorB.setVelocity(rightSpeed, percent);
-      rightMotorB.spin(reverse);
+    rightMotorA.setVelocity(rightSpeed, percent);
+    rightMotorA.spin(reverse);
+    rightMotorB.setVelocity(rightSpeed, percent);
+    rightMotorB.spin(reverse);
 
-      Claw.setVelocity(100, percent);
-      if (Controller.ButtonR1.pressing()) {
-          Claw.spin(forward);          // close claw
-      } else if (Controller.ButtonR2.pressing()) {
-          Claw.spin(reverse);          // open claw
-      } else {
-          Claw.stop();
-      }
+    // Lift Setup
+    Lift.setVelocity(100, percent);
+    if (Controller.ButtonX.pressing()) {
+      Lift.spin(forward);            // raise lift
+    }
+    else if (Controller.ButtonB.pressing()) {
+      Lift.spin(reverse);            // lower lift
+    }
+    else {
+      Lift.stop();
+    }
+
+    // Claw Grip Setup
+    Claw.setVelocity(100, percent);
+    if (Controller.ButtonR1.pressing()) {
+      Claw.spin(reverse);          // open claw
+    }
+    else if (Controller.ButtonR2.pressing()) {
+      Claw.spin(forward);          // close claw
+    }
+    else {
+      Claw.stop();
+    }
+
+    // Claw Rotation Setup
+    if (Controller.ButtonA.pressing()) {
+      Claw_Rotate.spinToPosition(180, degrees);
+    }
+
+    wait(5, msec);
   }
 }
 
