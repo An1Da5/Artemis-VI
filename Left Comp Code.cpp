@@ -93,6 +93,13 @@ competition Competition;
 
 void auton() {
   Drivetrain.setDriveVelocity(100, percent);
+  Claw.spinFor(forward, 90, degrees);
+  Drivetrain.driveFor(forward, 24, inches);
+  Lift.spinFor(forward, 720, degrees);
+  Claw_Rotate.spinToPosition(180, degrees);
+  Claw.spinFor(reverse, 90, degrees);
+  Drivetrain.driveFor(reverse, 12, inches);
+  Lift.spinFor(reverse, 720, degrees);
 }
 
 void user_control() {
