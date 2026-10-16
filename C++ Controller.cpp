@@ -76,10 +76,10 @@ void playVexcodeSound(const char *soundName) {
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
-/*    Module:       Left Comp Code.cpp                                        */
+/*    Module:       C++ Controller.cpp                                        */
 /*    Author:       Anika                                                     */
-/*    Created:      10/10/26                                                  */
-/*    Description:  Code for competitions starting on the left                */
+/*    Created:      9/10/26                                                   */
+/*    Description:  Main C++ Controller                                       */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
@@ -88,62 +88,55 @@ void playVexcodeSound(const char *soundName) {
   
 // Allows for easier use of the VEX Library
 using namespace vex;
-controller Controller = controller(primary);
-competition Competition;
-
-void auton() {
-  Drivetrain.setDriveVelocity(100, percent);
-}
 
 void user_control() {
+  Brain.Screen.clearScreen();
   Drivetrain.setDriveVelocity(100, percent);
+  controller Controller = controller(primary);
+
   while (true) {
-    // Arcade Drive Setup
-    int forwardMotion = Controller.Axis3.position();
-    int turnMotion = Controller.Axis1.position();
-    int leftSpeed = forwardMotion + turnMotion;
-    int rightSpeed = forwardMotion - turnMotion;
+      int forwardMotion = Controller.Axis3.position();
+      int turnMotion = Controller.Axis1.position();
+      int leftSpeed = forwardMotion + turnMotion;
+      int rightSpeed = forwardMotion - turnMotion;
 
-    leftMotorA.setVelocity(leftSpeed, percent);
-    leftMotorA.spin(reverse);
-    leftMotorB.setVelocity(leftSpeed, percent);
-    leftMotorB.spin(reverse);
+      leftMotorA.setVelocity(leftSpeed, percent);
+      leftMotorA.spin(reverse);
+      leftMotorB.setVelocity(leftSpeed, percent);
+      leftMotorB.spin(reverse);
 
-    rightMotorA.setVelocity(rightSpeed, percent);
-    rightMotorA.spin(reverse);
-    rightMotorB.setVelocity(rightSpeed, percent);
-    rightMotorB.spin(reverse);
+      rightMotorA.setVelocity(rightSpeed, percent);
+      rightMotorA.spin(reverse);
+      rightMotorB.setVelocity(rightSpeed, percent);
+      rightMotorB.spin(reverse);
 
-    // Lift Setup
-    Lift.setVelocity(100, percent);
-    if (Controller.ButtonX.pressing()) {
-      Lift.spin(forward);            // raise lift
-    }
-    else if (Controller.ButtonB.pressing()) {
-      Lift.spin(reverse);            // lower lift
-    }
-    else {
-      Lift.stop();
-    }
+      Lift.setVelocity(100, percent);
+      if (Controller.ButtonX.pressing()) {
+        Lift.spin(forward);            // raise lift
+      }
+      else if (Controller.ButtonB.pressing()) {
+        Lift.spin(reverse);            // lower lift
+      }
+      else {
+        Lift.stop();
+      }
 
-    // Claw Grip Setup
-    Claw.setVelocity(100, percent);
-    if (Controller.ButtonR1.pressing()) {
-      Claw.spin(reverse);          // open claw
-    }
-    else if (Controller.ButtonR2.pressing()) {
-      Claw.spin(forward);          // close claw
-    }
-    else {
-      Claw.stop();
-    }
+      Claw.setVelocity(100, percent);
+      if (Controller.ButtonR1.pressing()) {
+        Claw.spin(reverse);          // open claw
+      }
+      else if (Controller.ButtonR2.pressing()) {
+        Claw.spin(forward);          // close claw
+      }
+      else {
+        Claw.stop();
+      }
 
-    // Claw Rotation Setup
-    if (Controller.ButtonA.pressing()) {
-      Claw_Rotate.spinToPosition(180, degrees);
-    }
+      if (Controller.ButtonA.pressing()) {
+        Claw_Rotate.spinToPosition(180, degrees);
+      }
 
-    wait(5, msec);
+      wait(5, msec);
   }
 }
 
@@ -151,7 +144,5 @@ int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
   // Begin project code
-  Brain.Screen.clearScreen();
-  Competition.autonomous(auton);
-  Competition.drivercontrol(user_control);
+  user_control(); 
 }
