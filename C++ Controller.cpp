@@ -144,6 +144,7 @@ void user_control() {
     }
 
     wait(5, msec);
+  }
 }
 
 int main() {
