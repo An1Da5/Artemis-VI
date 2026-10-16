@@ -88,6 +88,7 @@ using namespace vex;
 void user_control() {
   Brain.Screen.clearScreen();
   Drivetrain.setDriveVelocity(100, percent);
+  controller Controller = controller(primary);
 
   while (true) {
       // Tank drive - Axis3 = left stick vertical, Axis2 = right stick vertical
@@ -119,5 +120,5 @@ int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
   // Begin project code
-  user_control()
+  user_control();
 }
