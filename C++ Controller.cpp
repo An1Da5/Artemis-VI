@@ -27,19 +27,19 @@ brain Brain;
 
 
 // Robot configuration code.
-motor leftMotorA = motor(PORT1, ratio6_1, false);
-motor leftMotorB = motor(PORT3, ratio6_1, false);
+motor leftMotorA = motor(PORT1, ratio18_1, false);
+motor leftMotorB = motor(PORT3, ratio18_1, false);
 motor_group LeftDriveSmart = motor_group(leftMotorA, leftMotorB);
-motor rightMotorA = motor(PORT2, ratio6_1, true);
-motor rightMotorB = motor(PORT4, ratio6_1, true);
+motor rightMotorA = motor(PORT2, ratio18_1, true);
+motor rightMotorB = motor(PORT4, ratio18_1, true);
 motor_group RightDriveSmart = motor_group(rightMotorA, rightMotorB);
 drivetrain Drivetrain = drivetrain(LeftDriveSmart, RightDriveSmart, 319.19, 295, 40, mm, 1);
 
-motor Lift = motor(PORT5, ratio18_1, false);
-
 motor Claw = motor(PORT6, ratio18_1, false);
 
-motor Claw_Rotate = motor(PORT7, ratio18_1, false);
+motor LiftMotorA = motor(PORT5, ratio36_1, false);
+motor LiftMotorB = motor(PORT7, ratio36_1, true);
+motor_group Lift = motor_group(LiftMotorA, LiftMotorB);
 
 
 
@@ -79,7 +79,7 @@ void playVexcodeSound(const char *soundName) {
 /*    Module:       C++ Controller.cpp                                        */
 /*    Author:       Anika                                                     */
 /*    Created:      9/10/26                                                   */
-/*    Description:  Main C++ Controller                                       */
+/*    Description:  Main C++ controller for testing                           */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
@@ -88,55 +88,51 @@ void playVexcodeSound(const char *soundName) {
   
 // Allows for easier use of the VEX Library
 using namespace vex;
+controller Controller = controller(primary);
 
 void user_control() {
   Brain.Screen.clearScreen();
   Drivetrain.setDriveVelocity(100, percent);
-  controller Controller = controller(primary);
 
   while (true) {
-      int forwardMotion = Controller.Axis3.position();
-      int turnMotion = Controller.Axis1.position();
-      int leftSpeed = forwardMotion + turnMotion;
-      int rightSpeed = forwardMotion - turnMotion;
+    int forwardMotion = Controller.Axis3.position();
+    int turnMotion = Controller.Axis1.position();
+    int leftSpeed = forwardMotion + turnMotion;
+    int rightSpeed = forwardMotion - turnMotion;
 
-      leftMotorA.setVelocity(leftSpeed, percent);
-      leftMotorA.spin(reverse);
-      leftMotorB.setVelocity(leftSpeed, percent);
-      leftMotorB.spin(reverse);
+    leftMotorA.setVelocity(leftSpeed, percent);
+    leftMotorA.spin(reverse);
+    leftMotorB.setVelocity(leftSpeed, percent);
+    leftMotorB.spin(reverse);
 
-      rightMotorA.setVelocity(rightSpeed, percent);
-      rightMotorA.spin(reverse);
-      rightMotorB.setVelocity(rightSpeed, percent);
-      rightMotorB.spin(reverse);
+    rightMotorA.setVelocity(rightSpeed, percent);
+    rightMotorA.spin(reverse);
+    rightMotorB.setVelocity(rightSpeed, percent);
+    rightMotorB.spin(reverse);
 
-      Lift.setVelocity(100, percent);
-      if (Controller.ButtonX.pressing()) {
-        Lift.spin(forward);            // raise lift
-      }
-      else if (Controller.ButtonB.pressing()) {
-        Lift.spin(reverse);            // lower lift
-      }
-      else {
-        Lift.stop();
-      }
+    Lift.setVelocity(100, percent);
+    if (Controller.ButtonL1.pressing()) {
+      Lift.spin(forward);        // raise lift
+    }
+    else if (Controller.ButtonL2.pressing()) {
+      Lift.spin(reverse);        // lower lift
+    }
+    else {
+      Lift.stop();
+    }
 
-      Claw.setVelocity(100, percent);
-      if (Controller.ButtonR1.pressing()) {
-        Claw.spin(reverse);          // open claw
-      }
-      else if (Controller.ButtonR2.pressing()) {
-        Claw.spin(forward);          // close claw
-      }
-      else {
-        Claw.stop();
-      }
+    Claw.setVelocity(100, percent);
+    if (Controller.ButtonR1.pressing()) {
+      Claw.spin(reverse);          // open claw
+    }
+    else if (Controller.ButtonR2.pressing()) {
+      Claw.spin(forward);          // close claw
+    }
+    else {
+      Claw.stop();
+    }
 
-      if (Controller.ButtonA.pressing()) {
-        Claw_Rotate.spinToPosition(180, degrees);
-      }
-
-      wait(5, msec);
+    wait(5, msec);
   }
 }
 
@@ -144,5 +140,6 @@ int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
   // Begin project code
-  user_control(); 
+  // auton()
+  user_control();
 }
