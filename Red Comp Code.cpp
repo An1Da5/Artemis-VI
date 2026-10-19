@@ -76,10 +76,10 @@ void playVexcodeSound(const char *soundName) {
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
-/*    Module:       Left Comp Code.cpp                                        */
+/*    Module:       Red Comp Code.cpp                                        */
 /*    Author:       Anika                                                     */
 /*    Created:      10/10/26                                                  */
-/*    Description:  Code for competitions starting on the left                */
+/*    Description:  Code for competitions on the red alliance                 */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
