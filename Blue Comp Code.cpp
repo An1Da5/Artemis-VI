@@ -27,19 +27,19 @@ brain Brain;
 
 
 // Robot configuration code.
-motor leftMotorA = motor(PORT1, ratio6_1, false);
-motor leftMotorB = motor(PORT3, ratio6_1, false);
+motor leftMotorA = motor(PORT1, ratio18_1, false);
+motor leftMotorB = motor(PORT3, ratio18_1, false);
 motor_group LeftDriveSmart = motor_group(leftMotorA, leftMotorB);
-motor rightMotorA = motor(PORT2, ratio6_1, true);
-motor rightMotorB = motor(PORT4, ratio6_1, true);
+motor rightMotorA = motor(PORT2, ratio18_1, true);
+motor rightMotorB = motor(PORT4, ratio18_1, true);
 motor_group RightDriveSmart = motor_group(rightMotorA, rightMotorB);
 drivetrain Drivetrain = drivetrain(LeftDriveSmart, RightDriveSmart, 319.19, 295, 40, mm, 1);
 
-motor Lift = motor(PORT5, ratio18_1, false);
-
 motor Claw = motor(PORT6, ratio18_1, false);
 
-motor Claw_Rotate = motor(PORT7, ratio18_1, false);
+motor LiftMotorA = motor(PORT5, ratio36_1, false);
+motor LiftMotorB = motor(PORT7, ratio36_1, true);
+motor_group Lift = motor_group(LiftMotorA, LiftMotorB);
 
 
 
@@ -79,7 +79,7 @@ void playVexcodeSound(const char *soundName) {
 /*    Module:       Left Comp Code.cpp                                        */
 /*    Author:       Anika                                                     */
 /*    Created:      10/10/26                                                  */
-/*    Description:  Code for competitions starting on the left                */
+/*    Description:  Code for competitions on the blue alliance                */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
@@ -91,19 +91,15 @@ using namespace vex;
 controller Controller = controller(primary);
 competition Competition;
 
+
 void auton() {
   Drivetrain.setDriveVelocity(100, percent);
-  Claw.spinFor(forward, 90, degrees);
   Drivetrain.driveFor(forward, 24, inches);
-  Lift.spinFor(forward, 720, degrees);
-  Claw_Rotate.spinToPosition(180, degrees);
-  Claw.spinFor(reverse, 90, degrees);
+  // Toggle.spinFor(reverse, 90, degrees);
   Drivetrain.driveFor(reverse, 12, inches);
-  Lift.spinFor(reverse, 720, degrees);
 }
 
 void user_control() {
-  Drivetrain.setDriveVelocity(100, percent);
   while (true) {
     // Arcade Drive Setup
     int forwardMotion = Controller.Axis3.position();
@@ -123,14 +119,11 @@ void user_control() {
 
     // Lift Setup
     Lift.setVelocity(100, percent);
-    if (Controller.ButtonX.pressing()) {
-      Lift.spin(forward);            // raise lift
+    if (Controller.ButtonL1.pressing()) {
+      Lift.spin(forward);        // raise lift
     }
-    else if (Controller.ButtonB.pressing()) {
-      Lift.spin(reverse);            // lower lift
-    }
-    else {
-      Lift.stop();
+    else if (Controller.ButtonL2.pressing()) {
+      Lift.spin(reverse);        // lower lift
     }
 
     // Claw Grip Setup
@@ -143,11 +136,6 @@ void user_control() {
     }
     else {
       Claw.stop();
-    }
-
-    // Claw Rotation Setup
-    if (Controller.ButtonA.pressing()) {
-      Claw_Rotate.spinToPosition(180, degrees);
     }
 
     wait(5, msec);
